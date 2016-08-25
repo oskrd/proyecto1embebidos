@@ -4,39 +4,31 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void pinMode(int pin, int MODE) {
-    printf("pinMode");
+void pinMode(int pin, char* MODE) {
+    
+    //Inicialización del pin
     FILE *fp;
     fp = fopen("/sys/class/gpio/export", "a+");
     fprintf(fp, "%d", pin);
-    printf("\ncasi");
-    if (fp == NULL) {
-        printf("\nmori");
-    } else {
-        printf("\nhola");
-        fclose(fp);
-        printf("\tCERRADO");
-    }
-    printf("\nescoria\n");
+    fclose(fp);
 
-
+    //Escribe el modo del pin elegido
     FILE *fp2;
     char str[50] = "/sys/class/gpio/gpio";
     char aInt[2];
 
     snprintf(aInt, 15, "%d", pin);
 
-    //strcat(str, "/sys/class/gpio/gpio");
     strcat(str, aInt);
     strcat(str, "/direction");
     printf("%s\n", str);
 
     fp2 = fopen(str, "a");
 
-    if (MODE == 0) {
+    if (MODE == "OUTPUT") {
         char x[3] = "out";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
-    } else if (MODE == 1) {
+    } else if (MODE == "INPUT") {
         char x[2] = "in";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
     } else {
@@ -88,7 +80,7 @@ int digitalRead(int pin) {
 void blink(int pin, int freq, int duration) {
     int i = 0;
     int timediv = 1 / (2 * freq);
-    pinMode(pin, 1);
+    pinMode(pin, "INPUT");
     while (i < duration) {
         digitalWrite(pin, 1);
         sleep(timediv);
@@ -101,9 +93,9 @@ void blink(int pin, int freq, int duration) {
 
 int main() {
     //blink(5, 4, 10);
-    pinMode(5, 1);
-    digitalWrite(5,1);
+    pinMode(5, "INPUT");
+ //   digitalWrite(5,1);
     sleep(2);
-    digitalWrite(5,0);
+ //   digitalWrite(5,0);
     return 0;
 }
