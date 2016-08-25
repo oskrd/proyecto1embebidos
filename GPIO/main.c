@@ -5,12 +5,12 @@
 #include <unistd.h>
 
 void pinMode(int pin, int MODE) {
-
+    printf("pinMode");
     FILE *fp;
     fp = fopen("/sys/class/gpio/export", "a");
     fputc(pin, fp);
     fclose(fp);
-
+    printf("hola");
     FILE *fp2;
     char str[35];
     char aInt[15];
