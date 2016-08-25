@@ -49,11 +49,11 @@ void pinMode(int pin, int MODE) {
 
 void digitalWrite(int pin, int value) {
     FILE *fp;
-    char str[35];
+    char str[35] = "/sys/class/gpio/gpio";
     char aInt[15];
     snprintf(aInt, 15, "%d", pin);
 
-    strcat(str, "/sys/class/gpio/gpio");
+    //strcat(str, "/sys/class/gpio/gpio");
     strcat(str, aInt);
     strcat(str, "/value");
 
@@ -69,12 +69,12 @@ void digitalWrite(int pin, int value) {
 
 int digitalRead(int pin) {
     FILE *fp;
-    char str[35];
+    char str[35] = "/sys/class/gpio/gpio";
     char aInt[15];
     char value[5];
     snprintf(aInt, 15, "%d", pin);
 
-    strcat(str, "/sys/class/gpio/gpio");
+    //strcat(str, "/sys/class/gpio/gpio");
     strcat(str, aInt);
     strcat(str, "/value");
 
@@ -102,5 +102,8 @@ void blink(int pin, int freq, int duration) {
 int main() {
     //blink(5, 4, 10);
     pinMode(5, 1);
+    digitalWrite(5,1);
+    sleep(2);
+    digitalWrite(5,0);
     return 0;
 }
