@@ -10,37 +10,41 @@ void pinMode(int pin, int MODE) {
     fp = fopen("/sys/class/gpio/export", "a+");
     fprintf(fp, "%d", pin);
     printf("\ncasi");
-    if (fp == NULL){
+    if (fp == NULL) {
         printf("\nmori");
-    }
-    else{
+    } else {
         printf("\nhola");
         fclose(fp);
         printf("\tCERRADO");
     }
     printf("\nescoria\n");
-    
-    
+
+
     FILE *fp2;
-    char str[35];
-    char aInt[15];
+    char str[50];
+    char aInt[2];
+
     snprintf(aInt, 15, "%d", pin);
 
     strcat(str, "/sys/class/gpio/gpio");
     strcat(str, aInt);
     strcat(str, "/direction");
+    printf("%s", str);
 
-    fp2 = fopen(str, "a+");
-    /*if (MODE == 0) {
-        char x[2] = "in";
+    fp2 = fopen(str, "w");
+
+    if (MODE == 0) {
+        char x[3] = "out";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
     } else if (MODE == 1) {
-        char x[3] = "out";
+        char x[2] = "in";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
     } else {
         //MODO DESCONOCIDO
     }
-    fclose(fp2);*/
+
+    fclose(fp2);
+
 }
 
 void digitalWrite(int pin, int value) {
@@ -73,9 +77,9 @@ int digitalRead(int pin) {
     strcat(str, "/sys/class/gpio/gpio");
     strcat(str, aInt);
     strcat(str, "/value");
-    
+
     fp = fopen(str, "r");
-    fread( value , 5 , 1, fp);
+    fread(value, 5, 1, fp);
     printf("%s\n", value);
     fclose(fp);
     return atoi(value);
