@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void pinMode(int pin, int MODE) {
+void pinMode(int pin, char *MODE) {
 
     FILE *fp;
     fp = fopen("/sys/class/gpio/export", "a");
@@ -21,10 +21,10 @@ void pinMode(int pin, int MODE) {
     strcat(str, "/direction");
 
     fp2 = fopen(str, "a");
-    if (MODE == 1) {
+    if (MODE == "INPUT") {
         char x[2] = "in";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
-    } else if (MODE == 0) {
+    } else if (MODE == "OUTPUT") {
         char x[3] = "out";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
     } else {
@@ -54,7 +54,21 @@ void digitalWrite(int pin, int value) {
 }
 
 int digitalRead(int pin) {
+    FILE *fp;
+    char str[35];
+    char aInt[15];
+    char value[5];
+    snprintf(aInt, 15, "%d", pin);
 
+    strcat(str, "/sys/class/gpio/gpio");
+    strcat(str, aInt);
+    strcat(str, "/value");
+    
+    fp = fopen(str, "r");
+    fread( value , strlen(5) , 1, fp);
+    printf("%s\n", value);
+    fclose(fp);
+    return atoi(value);
 }
 
 void blink(int pin, int freq, int duration) {
@@ -72,5 +86,6 @@ void blink(int pin, int freq, int duration) {
 }
 
 int main() {
+    pin
     return 0;
 }
