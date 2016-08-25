@@ -8,7 +8,7 @@ void pinMode(int pin, int MODE) {
     printf("pinMode");
     FILE *fp;
     fp = fopen("/sys/class/gpio/export", "a+");
-    fputc(fp, "%d", MODE);
+    fprintf(fp, "%d", pin);
     printf("\ncasi");
     if (fp == NULL){
         printf("\nmori");
