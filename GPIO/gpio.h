@@ -1,4 +1,3 @@
-
 void pinMode (int pin, char * MODE);
 void digitalWrite(int pin, int value);
 int digitalRead(int pin);
