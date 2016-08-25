@@ -7,10 +7,20 @@
 void pinMode(int pin, int MODE) {
     printf("pinMode");
     FILE *fp;
-    fp = fopen("/sys/class/gpio/export", "a");
-    fputc(pin, fp);
-    fclose(fp);
-    printf("hola");
+    fp = fopen("/sys/class/gpio/export", "a+");
+    fputc(fp, "%d", MODE);
+    printf("\ncasi");
+    if (fp == NULL){
+        printf("\nmori");
+    }
+    else{
+        printf("\nhola");
+        fclose(fp);
+        printf("\tCERRADO");
+    }
+    printf("\nescoria\n");
+    
+    
     FILE *fp2;
     char str[35];
     char aInt[15];
@@ -20,8 +30,8 @@ void pinMode(int pin, int MODE) {
     strcat(str, aInt);
     strcat(str, "/direction");
 
-    fp2 = fopen(str, "a");
-    if (MODE == 0) {
+    fp2 = fopen(str, "a+");
+    /*if (MODE == 0) {
         char x[2] = "in";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
     } else if (MODE == 1) {
@@ -30,7 +40,7 @@ void pinMode(int pin, int MODE) {
     } else {
         //MODO DESCONOCIDO
     }
-    fclose(fp2);
+    fclose(fp2);*/
 }
 
 void digitalWrite(int pin, int value) {
