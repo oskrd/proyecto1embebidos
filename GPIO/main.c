@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void pinMode(int pin, char *MODE) {
+void pinMode(int pin, int MODE) {
 
     FILE *fp;
     fp = fopen("/sys/class/gpio/export", "a");
@@ -21,10 +21,10 @@ void pinMode(int pin, char *MODE) {
     strcat(str, "/direction");
 
     fp2 = fopen(str, "a");
-    if (MODE == "INPUT") {
+    if (MODE == 0) {
         char x[2] = "in";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
-    } else if (MODE == "OUTPUT") {
+    } else if (MODE == 1) {
         char x[3] = "out";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
     } else {
@@ -45,7 +45,7 @@ void digitalWrite(int pin, int value) {
 
     fp = fopen(str, "a");
     if (value == 0 || value == 1) {
-        fwrite(value, sizeof (value), sizeof (value) / sizeof (value), fp);
+        fwrite(&value, sizeof (value), sizeof (value) / sizeof (value), fp);
     } else {
         //MODO DESCONOCIDO
     }
@@ -74,7 +74,7 @@ int digitalRead(int pin) {
 void blink(int pin, int freq, int duration) {
     int i = 0;
     int timediv = 1 / (2 * freq);
-    pinMode(pin, "OUTPUT");
+    pinMode(pin, 1);
     while (i < duration) {
         digitalWrite(pin, 1);
         sleep(timediv);
@@ -86,6 +86,7 @@ void blink(int pin, int freq, int duration) {
 }
 
 int main() {
-    blink(5, 4, 10);
+    //blink(5, 4, 10);
+    pinMode(5, 1);
     return 0;
 }
