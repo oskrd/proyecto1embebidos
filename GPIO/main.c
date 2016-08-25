@@ -65,7 +65,7 @@ int digitalRead(int pin) {
     strcat(str, "/value");
     
     fp = fopen(str, "r");
-    fread( value , strlen(5) , 1, fp);
+    fread( value , 5 , 1, fp);
     printf("%s\n", value);
     fclose(fp);
     return atoi(value);
@@ -86,6 +86,10 @@ void blink(int pin, int freq, int duration) {
 }
 
 int main() {
+<<<<<<< HEAD
     blink(5, 4, 10);
+=======
+    
+>>>>>>> dd8a423f2dc3e420061ef8873df3ebd3d61bcf4b
     return 0;
 }
