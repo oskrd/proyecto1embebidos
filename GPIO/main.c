@@ -45,7 +45,7 @@ void digitalWrite(int pin, int value) {
 
     fp = fopen(str, "a");
     if (value == 0 || value == 1) {
-        fwrite(value, sizeof (value), sizeof (value) / sizeof (), fp);
+        fwrite(value, sizeof (value), sizeof (value) / sizeof (value), fp);
     } else {
         //MODO DESCONOCIDO
     }
@@ -65,7 +65,7 @@ int digitalRead(int pin) {
     strcat(str, "/value");
     
     fp = fopen(str, "r");
-    fread( value , strlen(5) , 1, fp);
+    fread( value , 5 , 1, fp);
     printf("%s\n", value);
     fclose(fp);
     return atoi(value);
@@ -86,6 +86,6 @@ void blink(int pin, int freq, int duration) {
 }
 
 int main() {
-    pin
+    
     return 0;
 }
