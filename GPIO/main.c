@@ -4,34 +4,41 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void pinMode(int pin, bool MODE) {
+void pinMode(int pin, int MODE) {
+
     FILE *fp;
-    fp= fopen("/sys/class/gpio/export", "a");
+    fp = fopen("/sys/class/gpio/export", "a");
     fputc(pin, fp);
     fclose(fp);
 
     FILE *fp2;
     char str[80];
-    
+    char aInt[15];
+    snprintf(aInt, 15, "%d", pin);
+
     strcat(str, "/sys/class/gpio/gpio");
-    strcat(str, "17");
+    strcat(str, aInt);
     strcat(str, "/direction");
 
-    fp2= fopen(str, "a");
-    if (MODE == true){
-        fputc(atoi("in"), fp2);
+    fp2 = fopen(str, "a");
+    if (MODE == 1) {
+        char x[2] = "in";
+        fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
+    } else if (MODE == 0) {
+        char x[3] = "out";
+        fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
     }else{
-        fputc(atoi("out"), fp2);
+        //MODO DESCONOCIDO
     }
-    fclose(fp);
+    fclose(fp2);
 
 }
 
-void digitalWrite(int pin, bool value) {
+void digitalWrite(int pin, int value) {
 
 }
 
-bool digitalRead(int pin) {
+int digitalRead(int pin) {
 
 }
 
@@ -49,6 +56,6 @@ void blink(int pin, int freq, int duration) {
 
 }
 
-int main(){
+int main() {
     return 0;
 }

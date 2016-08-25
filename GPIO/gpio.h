@@ -1,7 +1,6 @@
-#include <stdbool.h>
 
-void pinMode (int pin, bool MODE);
-void digitalWrite(int pin, bool value);
-bool digitalRead(int pin);
+void pinMode (int pin, int MODE);
+void digitalWrite(int pin, int value);
+int digitalRead(int pin);
 void blink(int pin, int freq, int duration);
 
