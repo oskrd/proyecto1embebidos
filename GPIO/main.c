@@ -12,7 +12,7 @@ void pinMode(int pin, int MODE) {
     fclose(fp);
 
     FILE *fp2;
-    char str[80];
+    char str[35];
     char aInt[15];
     snprintf(aInt, 15, "%d", pin);
 
@@ -27,14 +27,29 @@ void pinMode(int pin, int MODE) {
     } else if (MODE == 0) {
         char x[3] = "out";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
-    }else{
+    } else {
         //MODO DESCONOCIDO
     }
     fclose(fp2);
-
 }
 
 void digitalWrite(int pin, int value) {
+    FILE *fp;
+    char str[35];
+    char aInt[15];
+    snprintf(aInt, 15, "%d", pin);
+
+    strcat(str, "/sys/class/gpio/gpio");
+    strcat(str, aInt);
+    strcat(str, "/value");
+
+    fp = fopen(str, "a");
+    if (value == 0 || value == 1) {
+        fwrite(value, sizeof (value), sizeof (value) / sizeof (), fp);
+    } else {
+        //MODO DESCONOCIDO
+    }
+    fclose(fp);
 
 }
 
