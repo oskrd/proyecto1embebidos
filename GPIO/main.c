@@ -21,17 +21,17 @@ void pinMode(int pin, int MODE) {
 
 
     FILE *fp2;
-    char str[50];
+    char str[50] = "/sys/class/gpio/gpio";
     char aInt[2];
 
     snprintf(aInt, 15, "%d", pin);
 
-    strcat(str, "/sys/class/gpio/gpio");
+    //strcat(str, "/sys/class/gpio/gpio");
     strcat(str, aInt);
     strcat(str, "/direction");
-    printf("%s", str);
+    printf("%s\n", str);
 
-    fp2 = fopen(str, "w");
+    fp2 = fopen(str, "a");
 
     if (MODE == 0) {
         char x[3] = "out";
