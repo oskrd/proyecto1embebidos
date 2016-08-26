@@ -24,16 +24,18 @@ void pinMode(int pin, char* MODE) {
     snprintf(aInt, 3, "%d", pin);
     strcat(str, aInt);
     strcat(str, "/direction");
-    printf("%s\n", str);
+    // printf("%s\n", str);
 
-    fp2 = fopen(str, "w");
+    fp2 = fopen(str, "a");
 
     if (MODE == "OUTPUT") {
-        char x[3] = "out";
+        char x[4] = "out";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
+        printf("Ok load: %s\n", x);
     } else if (MODE == "INPUT") {
-        char x[2] = "in";
+        char x[3] = "in";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
+        printf("Ok load: %s\n", x);
     }
 
     fclose(fp2);
@@ -52,11 +54,12 @@ void digitalWrite(int pin, int value) {
     strcat(str, aInt);
     strcat(str, "/value");
 
-    printf("%s\n", str);
+    //  printf("%s\n", str);
 
     fp = fopen(str, "w");
     if (value == 0 || value == 1) {
         fprintf(fp, "%d", value);
+        printf("Ok write: %d\n", value);
     }
     fclose(fp);
 
@@ -72,11 +75,12 @@ int digitalRead(int pin) {
     strcat(str, aInt);
     strcat(str, "/value");
 
-    printf("%s\n", str);
+    // printf("%s\n", str);
     fp = fopen(str, "r");
     if (fp != NULL) {
         fread(value, 2, 1, fp);
-        printf("%s\n", value);
+        printf("Ok read: ");
+
         fclose(fp);
         return atoi(value);
     } else {
@@ -89,34 +93,46 @@ void pinUnload(int pin) {
     FILE *fp;
     fp = fopen("/sys/class/gpio/unexport", "a");
     fprintf(fp, "%d", pin);
+    printf("Ok Unload\n");
     fclose(fp);
 }
 
-void blink(int pin, int freq, int duration) {
-    int i = 0;
-    int timediv = 1 / (2 * freq);
-    pinMode(pin, "INPUT");
-    while (i < duration) {
-        digitalWrite(pin, 1);
-        sleep(timediv);
-        digitalWrite(pin, 0);
-        sleep(timediv);
-        i += timediv * 2;
-    }
+void blink(int pin, float freq, int duration) {
+    printf("Starting blink\n");
 
+    float i = 0;
+    int pos = 1;
+    float timediv = 1 / ((float) freq * 2.0);
+    printf("Timediv: %f\n", timediv);
+    while (1) {
+        i += timediv;
+        printf("i: %f\n", i);
+        digitalWrite(pin, pos);
+
+        //Si dura menos del tiempo establecido, no hay problema
+        if (i <= duration) {
+            sleep(timediv);
+        } else {
+            //Si se pasa del tiempo, se resta el intervalo para llegar a la duración máxima.
+            printf("%f\n", duration - i + timediv);
+            sleep(duration - i + timediv);
+            break;
+        }
+
+        if (pos == 0) {
+            pos = 1;
+        } else {
+            pos = 0;
+        }
+
+    }
+    printf("End blink\n");
 }
 
 int main() {
-    //blink(5, 4, 10);
-    //  pinMode(5, "INPUT");
-    // digitalWrite(5,1);
-    // sleep(1);
-    // digitalWrite(7,0);
-    // sleep(1);
-    // int x5 = digitalRead(4);
-    //digitalWrite(40,1);
-    //sleep(0.1);
-    //digitalRead(40);
+    pinMode(2, "OUTPUT");
+    blink(2, 1.0 / 6.0, 10);
+    pinUnload(2);
 
     return 0;
 }
