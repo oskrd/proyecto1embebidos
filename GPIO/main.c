@@ -5,10 +5,14 @@
 #include <unistd.h>
 
 void pinMode(int pin, char* MODE) {
-    
+
     //Inicialización del pin
+    if (pin < 1 || pin > 40) {
+        return;
+    }
+
     FILE *fp;
-    fp = fopen("/sys/class/gpio/export", "a+");
+    fp = fopen("/sys/class/gpio/export", "a");
     fprintf(fp, "%d", pin);
     fclose(fp);
 
@@ -17,43 +21,45 @@ void pinMode(int pin, char* MODE) {
     char str[50] = "/sys/class/gpio/gpio";
     char aInt[2];
 
-    snprintf(aInt, 15, "%d", pin);
-
+    snprintf(aInt, 3, "%d", pin);
     strcat(str, aInt);
     strcat(str, "/direction");
-    printf("%s\n", str);
+    // printf("%s\n", str);
 
     fp2 = fopen(str, "a");
 
     if (MODE == "OUTPUT") {
-        char x[3] = "out";
+        char x[4] = "out";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
+        printf("Ok load: %s\n", x);
     } else if (MODE == "INPUT") {
-        char x[2] = "in";
+        char x[3] = "in";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
-    } else {
-        //MODO DESCONOCIDO
+        printf("Ok load: %s\n", x);
     }
 
     fclose(fp2);
-
 }
 
 void digitalWrite(int pin, int value) {
     FILE *fp;
-    char str[35] = "/sys/class/gpio/gpio";
-    char aInt[15];
-    snprintf(aInt, 15, "%d", pin);
 
-    //strcat(str, "/sys/class/gpio/gpio");
+    if (pin < 1 || pin > 40) {
+        return;
+    }
+
+    char str[35] = "/sys/class/gpio/gpio";
+    char aInt[2];
+    snprintf(aInt, 3, "%d", pin);
     strcat(str, aInt);
     strcat(str, "/value");
 
-    fp = fopen(str, "a");
+    //  printf("%s\n", str);
+
+    fp = fopen(str, "w");
     if (value == 0 || value == 1) {
-        fwrite(&value, sizeof (value), sizeof (value) / sizeof (value), fp);
-    } else {
-        //MODO DESCONOCIDO
+        fprintf(fp, "%d", value);
+        printf("Ok write: %d\n", value);
     }
     fclose(fp);
 
@@ -62,40 +68,71 @@ void digitalWrite(int pin, int value) {
 int digitalRead(int pin) {
     FILE *fp;
     char str[35] = "/sys/class/gpio/gpio";
-    char aInt[15];
-    char value[5];
-    snprintf(aInt, 15, "%d", pin);
+    char aInt[2];
+    char value[2];
 
-    //strcat(str, "/sys/class/gpio/gpio");
+    snprintf(aInt, 3, "%d", pin);
     strcat(str, aInt);
     strcat(str, "/value");
 
+    // printf("%s\n", str);
     fp = fopen(str, "r");
-    fread(value, 5, 1, fp);
-    printf("%s\n", value);
-    fclose(fp);
-    return atoi(value);
+    if (fp != NULL) {
+        fread(value, 2, 1, fp);
+        printf("Ok read: ");
+
+        fclose(fp);
+        return atoi(value);
+    } else {
+        return -1;
+    }
 }
 
-void blink(int pin, int freq, int duration) {
-    int i = 0;
-    int timediv = 1 / (2 * freq);
-    pinMode(pin, "INPUT");
-    while (i < duration) {
-        digitalWrite(pin, 1);
-        sleep(timediv);
-        digitalWrite(pin, 0);
-        sleep(timediv);
-        i += timediv * 2;
-    }
+void pinUnload(int pin) {
 
+    FILE *fp;
+    fp = fopen("/sys/class/gpio/unexport", "a");
+    fprintf(fp, "%d", pin);
+    printf("Ok Unload\n");
+    fclose(fp);
+}
+
+void blink(int pin, float freq, int duration) {
+    printf("Starting blink\n");
+
+    float i = 0;
+    int pos = 1;
+    float timediv = 1 / ((float) freq * 2.0);
+    printf("Timediv: %f\n", timediv);
+    while (1) {
+        i += timediv;
+        printf("i: %f\n", i);
+        digitalWrite(pin, pos);
+
+        //Si dura menos del tiempo establecido, no hay problema
+        if (i <= duration) {
+            sleep(timediv);
+        } else {
+            //Si se pasa del tiempo, se resta el intervalo para llegar a la duración máxima.
+            printf("%f\n", duration - i + timediv);
+            sleep(duration - i + timediv);
+            break;
+        }
+
+        if (pos == 0) {
+            pos = 1;
+        } else {
+            pos = 0;
+        }
+
+    }
+    printf("End blink\n");
 }
 
 int main() {
-    //blink(5, 4, 10);
-    pinMode(5, "INPUT");
- //   digitalWrite(5,1);
-    sleep(2);
- //   digitalWrite(5,0);
+    pinMode(2, "OUTPUT");
+    blink(2, 1.0 / 6.0, 10);
+    pinUnload(2);
+
     return 0;
 }
