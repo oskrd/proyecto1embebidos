@@ -1,0 +1,110 @@
+<div class='content-wrapper' ng-init="app.settings.pagetitle = 'Productos';">
+    <div class="col-lg-12" ng-controller="FormXeditableCtrl">
+        <section class="box ">
+            <header class="panel_header">
+                <h2 class="title pull-left">Mangas</h2>
+                <div class="actions panel_actions pull-right">
+                    <i class="box_toggle material-icons">expand_more</i>
+                    <i class="box_close material-icons">close</i>
+                </div>
+            </header>
+            <div class="content-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+                        <table class="table table-bordered">
+                            <tr style="font-weight: bold">
+                                <td style='width:8%'>Estacion</td>
+                                <td style="width:100%; padding:0px;">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="width:100%; padding:0px;" >
+                                        <table class="table">
+                                            <tr>
+                                                <td style="width:10%">Nombre</td>
+                                                <td style="width:28%">Descripcion</td>
+                                                <td style="width:10%">Capacidad</td>
+                                                <td style="width:10%">Disponible</td>
+                                                <td style="width:10%">Estado</td>
+                                                <td style="width:10%">Descuento</td>
+                                                <td style="width:10%">Foto</td>
+                                                <td style="width:12%">Editar</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="estacion in estaciones">
+                                <td class="v-middle">
+                                    <span>
+                                        {{ estacion.nombre}}
+                                    </span>
+                                </td>
+                                <td style="width:100%; padding:0px;">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="width:100%; padding:0px;" >
+                                        <table class="table table-striped">
+                                            <tr ng-repeat="manga in estacion.mangas" >
+                                                <td style="width:10%">
+                                                    <span editable-text="manga.producto.nombre" e-name="nombre" e-form="mangaform" e-required>
+                                                        {{ manga.producto.nombre}}
+                                                    </span>
+                                                </td>
+                                                <td style="width:28%">
+                                                    <span editable-text="manga.producto.descripcion" e-name="descripcion" e-form="mangaform" e-required>
+                                                        {{ manga.producto.descripcion}}
+                                                    </span>
+                                                </td>
+                                                <td style="width:10%">
+                                                    <span editable-number="manga.capacidad" e-name="capacidad" e-form="mangaform" e-required>
+                                                        {{ manga.capacidad}}
+                                                    </span>
+                                                </td>
+                                                <td style="width:10%">
+                                                    <span editable-number="manga.disponible" e-name="disponible" e-form="mangaform" e-required>
+                                                        {{ manga.disponible}}
+                                                    </span>
+                                                </td>
+                                                <td style="width:10%">
+                                                    <span class="{{'label ' + styleStatus(getStatus(manga))}}">
+                                                        {{showStatus(getStatus(manga))}}
+                                                    </span>
+                                                </td>
+                                                <td style="width:10%">
+                                                    <span editable-number="manga.producto.oferta" e-name="oferta" e-form="mangaform" e-required>
+                                                        {{ manga.producto.oferta + '%'}}
+                                                    </span>
+                                                </td>
+                                                <td style="width:10%">
+                                                    <span editable-text="manga.producto.foto" e-name="foto" e-form="mangaform" e-required>
+                                                        <img ng-src="{{ manga.producto.foto}} " ng-show="manga.producto.foto" style="max-width:100%;max-height:100%;">
+                                                    </span>
+                                                </td>
+                                                <td style="white-space: nowrap;width:12%">
+                                                    <!-- form -->
+                                                    <form editable-form name="mangaform" onaftersave="postManga($parent.$index,$index)" ng-show="mangaform.$visible" class="form-buttons form-inline">
+                                                        <button type="submit" ng-disabled="mangaform.$waiting" class="btn btn-xs btn-info">
+                                                            <i class="material-icons">done</i>
+                                                        </button>
+                                                        <button type="button" ng-disabled="mangaform.$waiting" ng-click="mangaform.$cancel()" class="btn btn-xs btn-default">                                        
+                                                            <i class="material-icons">clear</i>
+                                                        </button>
+                                                    </form>
+                                                    <div class="buttons" ng-show="!mangaform.$visible">
+                                                        <button class="btn btn-xs btn-info" ng-click="mangaform.$show()">
+                                                            <i class="material-icons">edit</i>
+                                                        </button>
+                                                        <button class="btn btn-xs btn-danger" ng-click="deleteManga($parent.$index, $index)">
+                                                            <i class="material-icons">delete</i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <button class="btn btn-primary btn-sm" style="margin:10px;" ng-click="putManga($index)">Nuevo producto</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

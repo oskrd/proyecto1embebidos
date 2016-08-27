@@ -1,0 +1,31 @@
+<div class="col-md-12 col-sm-12 col-xs-12 mail_list" ng-controller="MailListCtrl">
+    <table class="table table-hover">
+        <tr class="{{mail.state}}" ng-repeat="mail in mails| filter:fold" id="mail_msg_{{mail._id}}">
+            <td class='brief' style="width: 60%">
+                <img ng-src="{{mail.foto}}" ng-show="mail.foto">
+                <strong>{{mail.nombre}}</strong>
+                <strong style="padding-left: 2%;">{{mail.correo ? '(' : ''}}</strong>
+                <a style="padding-left: 0;" ng-href="{{mail.correo? 'mailto:#':''}}">{{mail.correo? mail.correo:''}}</a>
+                <strong>{{mail.correo? ' )':''}}</strong><br>
+
+                <a class="msgtext">{{mail.asunto? "ASUNTO: "+mail.asunto:''}}</a><br ng-show="mail.asunto">
+                <a class="msgtext">{{mail.comentario}}</a>
+
+            </td>
+            <td class='fromnow' style="width:30%;">
+                <div class="star pull-right">
+                    <i class="material-icons icon-sm icon-default" ng-class="">{{mail.fold === 'starred' ? (mail.valoracion > 0 ? 'star' : 'star_border') : ''}}</i>
+                    <i class="material-icons icon-sm icon-default" ng-class="">{{mail.fold === 'starred' ? (mail.valoracion > 1 ? 'star' : 'star_border') : ''}}</i>
+                    <i class="material-icons icon-sm icon-default" ng-class="">{{mail.fold === 'starred' ? (mail.valoracion > 2 ? 'star' : 'star_border') : ''}}</i>
+                    <i class="material-icons icon-sm icon-default" ng-class="">{{mail.fold === 'starred' ? (mail.valoracion > 3 ? 'star' : 'star_border') : ''}}</i>
+                    <i class="material-icons icon-sm icon-default" ng-class="">{{mail.fold === 'starred' ? (mail.valoracion > 4 ? 'star' : 'star_border') : ''}}</i>
+                </div>
+            </td>
+            <td style="width:10%">
+                <button class="btn btn-xs btn-danger" ng-click="deleteMail(mail._id)">
+                    <i class="material-icons">delete</i>
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
