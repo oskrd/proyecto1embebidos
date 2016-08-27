@@ -1,4 +1,4 @@
-#include "gpio.h"
+#include <gpio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -31,11 +31,11 @@ void pinMode(int pin, char* MODE) {
     if (MODE == "OUTPUT") {
         char x[4] = "out";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
-        printf("Ok load: %s\n", x);
+        //printf("Ok load: %s\n", x);
     } else if (MODE == "INPUT") {
         char x[3] = "in";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
-        printf("Ok load: %s\n", x);
+        //printf("Ok load: %s\n", x);
     }
 
     fclose(fp2);
@@ -59,7 +59,7 @@ void digitalWrite(int pin, int value) {
     fp = fopen(str, "w");
     if (value == 0 || value == 1) {
         fprintf(fp, "%d", value);
-        printf("Ok write: %d\n", value);
+        //printf("Ok write: %d\n", value);
     }
     fclose(fp);
 
@@ -79,7 +79,7 @@ int digitalRead(int pin) {
     fp = fopen(str, "r");
     if (fp != NULL) {
         fread(value, 2, 1, fp);
-        printf("Ok read: ");
+        //printf("Ok read: ");
 
         fclose(fp);
         return atoi(value);
@@ -93,29 +93,30 @@ void pinUnload(int pin) {
     FILE *fp;
     fp = fopen("/sys/class/gpio/unexport", "a");
     fprintf(fp, "%d", pin);
-    printf("Ok Unload\n");
+    //printf("Ok Unload\n");
     fclose(fp);
 }
 
 void blink(int pin, float freq, int duration) {
-    printf("Starting blink\n");
+    //printf("Starting blink\n");
 
     float i = 0;
     int pos = 1;
     float timediv = 1 / ((float) freq * 2.0);
-    printf("Timediv: %f\n", timediv);
+    //printf("Timediv: %f\n", timediv);
     while (1) {
         i += timediv;
-        printf("i: %f\n", i);
+        //printf("i: %f\n", i);
         digitalWrite(pin, pos);
 
         //Si dura menos del tiempo establecido, no hay problema
-        if (i <= duration) {
-            sleep(timediv);
+        if (i <= (float) duration) {
+            usleep((int)1000000*timediv);
+            //printf("cualquier estupidez");
         } else {
             //Si se pasa del tiempo, se resta el intervalo para llegar a la duración máxima.
-            printf("%f\n", duration - i + timediv);
-            sleep(duration - i + timediv);
+            //printf("conchaculo%d\n", (int)( 1000000*duration - 1000000*i + 1000000*timediv));
+            usleep((int)( 1000000*duration - 1000000*i + 1000000*timediv));
             break;
         }
 
@@ -126,13 +127,14 @@ void blink(int pin, float freq, int duration) {
         }
 
     }
-    printf("End blink\n");
+    //printf("End blink\n");
 }
-
+/*
 int main() {
     pinMode(2, "OUTPUT");
-    blink(2, 1.0 / 6.0, 10);
+    blink(2, 1.0/6.0, 7);
     pinUnload(2);
 
     return 0;
 }
+*/
