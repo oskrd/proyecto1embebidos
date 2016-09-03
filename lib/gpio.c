@@ -1,8 +1,8 @@
-#include <gpio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <gpio.h>
 
 void pinMode(int pin, char* MODE) {
 
@@ -54,7 +54,7 @@ void digitalWrite(int pin, int value) {
     strcat(str, aInt);
     strcat(str, "/value");
 
-    //  printf("%s\n", str);
+    //printf("%s\n", str);
 
     fp = fopen(str, "w");
     if (value == 0 || value == 1) {
