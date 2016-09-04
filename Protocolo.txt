@@ -1,0 +1,27 @@
+Protocolo del servidor
+
+/usuarios/nuevo (post)
+{user: "esteban", pass: "123456"}
+-true: si se guarda
+-false: si ya existe user
+
+/usuarios/login (post)
+{user: "esteban", pass: "123456"}
+-true: Datos correctos
+-False: User o pass incorrectos
+
+
+/leds (get)
+-{"1","1","0","1","0"} (valor de leds para cada uno)
+
+/leds (post)
+{num: "1", valor: "1"}  (led 1, valor 1)
+-true: cambio correcto
+
+
+/puertas (get)
+-{"1","1","0"} (valor de puertas para cada una)
+
+
+/camara (get)
+-foto?
