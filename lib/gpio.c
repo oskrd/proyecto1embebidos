@@ -129,12 +129,7 @@ void blink(int pin, float freq, int duration) {
     }
     //printf("End blink\n");
 }
-/*
-int main() {
-    pinMode(2, "OUTPUT");
-    blink(2, 1.0/6.0, 7);
-    pinUnload(2);
 
-    return 0;
+int suma(int num1, int num2){
+	return num1+num2;
 }
-*/

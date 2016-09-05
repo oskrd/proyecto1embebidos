@@ -1,12 +1,19 @@
 var express = require('express');
-//var gpio = require("../build/Release/gpio")
-var TAFFY = require('taffy');
 var router = express.Router();
-var leds = TAFFY([{led: "1", valor: "0"},
-    {led: "2", valor: "0"},
-    {led: "3", valor: "0"},
-    {led: "4", valor: "0"},
-    {led: "5", valor: "0"}]);
+
+var ffi = require("ffi");
+var gpio = ffi.Library('./lib/libgpio', {
+  "pinMode": [ "void", [ "int", "string" ] ],
+  "digitalWrite": [ "void",  ["int", "int"] ],
+  "digitalRead": [ "int",   ["int"]  ]
+});
+
+//gpio.pinMode(#,"OUTPUT"); //Led1
+//gpio.pinMode(#,"OUTPUT"); //Led2
+//gpio.pinMode(#,"OUTPUT"); //Led3
+//gpio.pinMode(#,"OUTPUT"); //Led4
+//gpio.pinMode(#,"OUTPUT"); //Led5
+
 
 // Middleware for all this routers requests
 router.use(function timeLog(req, res, next) {
@@ -16,13 +23,19 @@ router.use(function timeLog(req, res, next) {
 
 router.route('/')
         .post(function (req, res) {
-            leds({led: req.body.num}).update({valor: req.body.valor});
-            //  gpio.pinMode(2,"OUTPUT")
+            //gpio.digitalWrite(req.body.num, req.body.valor);
             res.send(true);
         })
 
         .get(function (req, res) {
-            res.send(leds().select("valor"));
+            var leds= [
+            //gpio.digitalRead(#),
+            //gpio.digitalRead(#),
+            //gpio.digitalRead(#),
+            //gpio.digitalRead(#),
+            //gpio.digitalRead(#)
+            ];
+            res.send(leds);
         });
 
 module.exports = router;
