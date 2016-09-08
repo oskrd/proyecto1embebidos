@@ -1,0 +1,15 @@
+Oscar David Carmona Carvajal 201214914
+Esteban Calvo 2010
+
+Para instruciones de ejecución hacer ./ambiente.sh
+La aplicación utiliza los GPIO2, GPIO3 y GPIO4. Al 2 y 3 se le debe conectar LED y al 4 un interruptor con resistencia ya sea de pullup o pulldown.
+
+Investigación
+
+1-¿Qué pasos debe seguir antes de escribir o leer de un puerto de entrada/salida general (GPIO)?
+
+
+
+2-¿Qué comando podría utilizar, bajo Linux, para escribir a un GPIO específico?
+
+

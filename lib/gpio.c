@@ -7,7 +7,7 @@
 void pinMode(int pin, char* MODE) {
 
     //Inicialización del pin
-    if (pin < 1 || pin > 40) {
+    if (pin < 2 || pin > 27) {
         return;
     }
 
@@ -24,18 +24,20 @@ void pinMode(int pin, char* MODE) {
     snprintf(aInt, 3, "%d", pin);
     strcat(str, aInt);
     strcat(str, "/direction");
-    // printf("%s\n", str);
+    //printf("%s\n", str);                         //for debug
 
     fp2 = fopen(str, "a");
 
-    if (MODE == "OUTPUT") {
+    if (strcmp(MODE, "OUTPUT") == 0) {
+	//printf("GPIO%d como salida.\n",pin);     //for debug
         char x[4] = "out";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
-        //printf("Ok load: %s\n", x);
-    } else if (MODE == "INPUT") {
+        //printf("Ok load: %s\n", x);              //for debug
+    } else if (strcmp(MODE, "INPUT") == 0) {
+	//printf("GPIO%d como entrada.\n", pin);   //for debug
         char x[3] = "in";
         fwrite(x, sizeof (x[0]), sizeof (x) / sizeof (x[0]), fp2);
-        //printf("Ok load: %s\n", x);
+        //printf("Ok load: %s\n", x);              //for debug
     }
 
     fclose(fp2);
@@ -54,12 +56,12 @@ void digitalWrite(int pin, int value) {
     strcat(str, aInt);
     strcat(str, "/value");
 
-    //printf("%s\n", str);
+    //printf("%s\n", str);                         //for debug
 
     fp = fopen(str, "w");
     if (value == 0 || value == 1) {
         fprintf(fp, "%d", value);
-        //printf("Ok write: %d\n", value);
+        //printf("Ok write: %d\n", value);        //for debug
     }
     fclose(fp);
 
@@ -75,11 +77,11 @@ int digitalRead(int pin) {
     strcat(str, aInt);
     strcat(str, "/value");
 
-    // printf("%s\n", str);
+    //printf("%s\n", str);                        //for debug
     fp = fopen(str, "r");
     if (fp != NULL) {
         fread(value, 2, 1, fp);
-        //printf("Ok read: ");
+        //printf("Ok read: ");                    //for debug
 
         fclose(fp);
         return atoi(value);
@@ -93,12 +95,12 @@ void pinUnload(int pin) {
     FILE *fp;
     fp = fopen("/sys/class/gpio/unexport", "a");
     fprintf(fp, "%d", pin);
-    //printf("Ok Unload\n");
+    //printf("Ok Unload\n");                      //for debug
     fclose(fp);
 }
 
 void blink(int pin, float freq, int duration) {
-    //printf("Starting blink\n");
+    //printf("Starting blink\n");                //for debug
 
     float i = 0;
     int pos = 1;
@@ -112,10 +114,10 @@ void blink(int pin, float freq, int duration) {
         //Si dura menos del tiempo establecido, no hay problema
         if (i <= (float) duration) {
             usleep((int)1000000*timediv);
-            //printf("cualquier estupidez");
+            //printf("test if");
         } else {
             //Si se pasa del tiempo, se resta el intervalo para llegar a la duración máxima.
-            //printf("conchaculo%d\n", (int)( 1000000*duration - 1000000*i + 1000000*timediv));
+            //printf("%d\n", (int)( 1000000*duration - 1000000*i + 1000000*timediv));
             usleep((int)( 1000000*duration - 1000000*i + 1000000*timediv));
             break;
         }
@@ -127,14 +129,5 @@ void blink(int pin, float freq, int duration) {
         }
 
     }
-    //printf("End blink\n");
+    //printf("End blink\n");                    //for debug
 }
-/*
-int main() {
-    pinMode(2, "OUTPUT");
-    blink(2, 1.0/6.0, 7);
-    pinUnload(2);
-
-    return 0;
-}
-*/
