@@ -1,0 +1,22 @@
+<ion-view style="" id="page5" title="AtMyPlace">
+    <ion-content class="has-header" padding="true">
+        <form class="list" id="atMyPlace2-form3" ng-submit="registerForm(newUser)">
+            <h2 style="color: rgb(52, 50, 164);" id="atMyPlace2-heading5">Registrarse</h2>
+            <ion-list id="atMyPlace2-list3">
+                <label id="atMyPlace2-input3" class="item item-input">
+                    <span class="input-label">Nombre</span>
+                    <input placeholder="" type="text" ng-model="newUser.name">
+                </label>
+                <label id="atMyPlace2-input4" class="item item-input">
+                    <span class="input-label">Alias</span>
+                    <input placeholder="" type="text" ng-model="newUser.nickname">
+                </label>
+                <label id="atMyPlace2-input5" class="item item-input">
+                    <span class="input-label">Contraseña</span>
+                    <input placeholder="" type="password" ng-model="newUser.password">
+                </label>
+				<input type="submit" class="button button-block button-positive" value="Registrar">
+            </ion-list>
+        </form>
+    </ion-content>
+</ion-view>
