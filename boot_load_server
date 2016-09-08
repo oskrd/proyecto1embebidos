@@ -1,0 +1,33 @@
+#! /bin/sh
+# /etc/init.d/MyApp
+
+### BEGIN INIT INFO
+# Provides:          server.js
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Starts server.js
+# Description:       Start / stop server.js at boot / shutdown.
+### END INIT INFO
+
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+   start)
+    echo "Starting MyApp.js"
+    # run application you want to start
+    node /home/root/Servidor/server.js
+   ;;
+   stop)
+    echo "Stopping MyApp.js"
+    # kill application you want to stop
+    killall server.js
+    ;;
+  *)
+    echo "Usage: /etc/init.d/MyApp {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
