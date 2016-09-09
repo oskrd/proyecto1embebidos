@@ -3,7 +3,7 @@
         <h3 id="leds-heading3" style="color:#000000;text-align:center;">Control de luces</h3>
         <div class="spacer" style="width: 300px; height: 41px;"></div>
         <form id="leds-form7" class="list">
-            <ion-toggle toggle-class="toggle-positive" ng-repeat= "item in ledList" ng-model="item.checked" ng-checked="item.checked">{{item.text}}</ion-toggle>
+            <ion-toggle toggle-class="toggle-positive" ng-repeat= "item in ledList" ng-click="request(this)">{{item.text}}</ion-toggle>
         </form>
         <div id="leds-button-bar1" class="button-bar"></div>
     </ion-content>
