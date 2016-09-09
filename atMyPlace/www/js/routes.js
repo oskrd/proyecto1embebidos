@@ -10,52 +10,62 @@ angular.module('app.routes', [])
     
   
 
-      .state('funciones.luces', {
+      .state('tabsController.leds', {
     url: '/luces',
     views: {
-      'side-menu21': {
-        templateUrl: 'templates/luces.html',
-        controller: 'lucesCtrl'
+      'tab1': {
+        templateUrl: 'templates/leds.html',
+        controller: 'ledsCtrl'
       }
     }
   })
 
-  .state('funciones.puertas', {
+  .state('tabsController.mapa', {
+    url: '/mapa',
+    views: {
+      'tab5': {
+        templateUrl: 'templates/mapa.html',
+        controller: 'mapaCtrl'
+      }
+    }
+  })
+
+  .state('tabsController.puertas', {
     url: '/puertas',
     views: {
-      'side-menu21': {
+      'tab3': {
         templateUrl: 'templates/puertas.html',
         controller: 'puertasCtrl'
       }
     }
   })
 
-  .state('funciones.cMara', {
+  .state('tabsController.camara', {
     url: '/camara',
     views: {
-      'side-menu21': {
-        templateUrl: 'templates/cMara.html',
-        controller: 'cMaraCtrl'
+      'tab4': {
+        templateUrl: 'templates/camara.html',
+        controller: 'camaraCtrl'
       }
     }
   })
 
-  .state('funciones', {
-    url: '/side_menu',
-    templateUrl: 'templates/funciones.html',
+  .state('tabsController', {
+    url: '/menu',
+    templateUrl: 'templates/tabsController.html',
     abstract:true
   })
 
-  .state('atMyPlace', {
+  .state('login', {
     url: '/login',
-    templateUrl: 'templates/atMyPlace.html',
-    controller: 'atMyPlaceCtrl'
+    templateUrl: 'templates/login.html',
+    controller: 'loginCtrl'
   })
 
-  .state('atMyPlace2', {
+  .state('registro', {
     url: '/signup',
-    templateUrl: 'templates/atMyPlace2.html',
-    controller: 'atMyPlace2Ctrl'
+    templateUrl: 'templates/registro.html',
+    controller: 'registroCtrl'
   })
 
 $urlRouterProvider.otherwise('/login')

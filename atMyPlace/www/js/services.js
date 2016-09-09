@@ -1,4 +1,4 @@
-angular.module('app.services', [])
+angular.module('app.services', ['ngResource'])
 
 .factory('BlankFactory', [function(){
 
@@ -8,11 +8,15 @@ angular.module('app.services', [])
 
 }])
 
-.service('HttpService', function($http) {
+.service('HttpGet', function($http) {
+	var server = 'http://192.168.100.5:8888';
  return {
    getLuces: function() {
      // $http returns a promise, which has a then function, which also returns a promise.
-     return $http.get('http://192.168.100.11:8888/leds')
+		 var part = '/leds';
+		 var url = server.concat(part);
+		 console.log('Solicito: ', url)
+     return $http.get(url)
        .then(function (response) {
          // In the response, resp.data contains the result. Check the console to see all of the data returned.
          console.log('Get luces', response);
@@ -20,11 +24,27 @@ angular.module('app.services', [])
        });
    },
    getPuertas: function() {
-       return $http.get('http://192.168.100.11:8888/puertas').then(function(response){
-           console.log('Get puertas', response);
-           return response.data;
-       })
-   }
+		 var part = '/puertas';
+		 var url = server.concat(part);
+		 console.log('Solicito: ', url);
+		 return $http.get(url).then(function(response){
+			 console.log('Get puertas', response);
+			 return response.data;
+		 })
+   },
+	 getFoto: function() {
+		 var part = '/camara';
+		 var url = server.concat(part);
+		 console.log('Solicito: ', url);
+		 return $http.get(url).then(function(response){
+			 console.log('Get foto', response);
+			 return response.data;
+		 })
+	 }
+	 
  };
+})
+
+.factory('HttpPost', function($resource){
+ return $resource('http://jsonplaceholder.typicode.com/posts');
 });
-;
